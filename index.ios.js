@@ -11,13 +11,13 @@ import {
   Text,
   View
 } from 'react-native';
+import Index from './src/Index';
 
 class RNDemo extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <CheckInList/>
-        <CheckInListAntd/>
+        <Index/>
       </View>
     );
   }
