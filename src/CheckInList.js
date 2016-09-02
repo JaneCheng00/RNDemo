@@ -11,7 +11,7 @@ export default class CheckInList extends Component {
     render(){
         return (<View>
             <Text>
-                按钮
+                同步 And
             </Text>
         </View>);
     }
