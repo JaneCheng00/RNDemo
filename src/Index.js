@@ -9,12 +9,14 @@ import {
 } from 'react-native';
 import CheckInList from './CheckInList';
 import CheckInListAntd from './CheckInListAntd';
+import SQLiteDemo2 from './SQLiteDemo2';
 
 export default class Index extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <CheckInListAntd/>
+                <SQLiteDemo2/>
+
             </View>
         );
     }
@@ -23,7 +25,7 @@ export default class Index extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 20,
+        flexDirection: 'column',
         backgroundColor: '#F5FCFF',
     },
 });

@@ -20,4 +20,11 @@ https://github.com/ant-design/ant-design-mobile
  </plist>
 `
 
+# 列表
+增加listview 控件的使用
+
+# 数据库
+增加对sqlite 的支持
+
+
 

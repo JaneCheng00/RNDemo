@@ -25,6 +25,7 @@ export default class CheckInListAntd extends Component{
       onPressAsync() {
           console.log(3);
           var list = this;
+          console.log(config.queryUrl);
           fetch(config.queryUrl)
               .then((response) => response.json())
               .catch((error) => {
@@ -41,6 +42,9 @@ export default class CheckInListAntd extends Component{
         console.log(2);
         return (
             <View>
+                <Text>
+                    Antd控件
+                </Text>
                 <Button onPress={this.onPressAsync.bind(this)}>同步</Button>
                 <Text style={styles.baseText}>
                     {this.state.checkInList}
