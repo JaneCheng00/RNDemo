@@ -10,7 +10,16 @@ import {
     StyleSheet,
     RecyclerViewBackedScrollView,
 } from 'react-native';
-import { default as config } from './config';
+import { default as config } from '../config';
+import CheckInDB from './CheckInDB';
+import SQLite from 'react-native-sqlite-storage';
+
+var database_name = "test5.db";
+var database_version = "1.0";
+var database_displayname = "test5";
+var database_size = 200000;
+var db;
+var table_name = "CheckInPersons";
 
 export default class CheckInList extends Component {
     // 构造
@@ -20,12 +29,28 @@ export default class CheckInList extends Component {
           var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           this.state = {
               ds:ds.cloneWithRows([
-                  {USER_NAME:'测试（0）', ATTENDANCE_WEEK:'星期八', ONDUTY_TIME:'00:00:00'},
-                  {USER_NAME:'测试（1）', ATTENDANCE_WEEK:'星期八', ONDUTY_TIME:'00:00:00'},
+                  {_PK_: "1", USER_NAME:'测试（0）', ATTENDANCE_WEEK:'星期八', ONDUTY_TIME:'00:00:00'},
+                  {_PK_: "2", USER_NAME:'测试（1）', ATTENDANCE_WEEK:'星期八', ONDUTY_TIME:'00:00:00'},
               ]),
               checkInList: "..."
           };
+          SQLite.DEBUG(true);
+          SQLite.enablePromise(true);
+          SQLite.enablePromise(false);
       }
+
+    openCB() {
+        console.log("Database OPEN");
+    }
+
+    closeCB() {
+        console.log("Database CLOSED");
+    }
+
+    errorCB(err) {
+        console.log("error: ",err);
+        return false;
+    }
 
     onPressAsync() {
         console.log(3);
@@ -37,11 +62,46 @@ export default class CheckInList extends Component {
                 console.log(error);
             })
             .then((responseData) => {
+                var data = responseData._DATA_;
                 console.log(responseData);
-                console.log(responseData._DATA_);
-                list.setState({ds:this.state.ds.cloneWithRows(responseData._DATA_)});
-            })
+                console.log(data);
+                list.setState({ds:this.state.ds.cloneWithRows(data)});
+                return data;
+            }).then((checkInData) => {
+                db = SQLite.openDatabase(database_name, database_version, database_displayname, database_size, this.openCB, this.errorCB);
+                db.transaction(function() {
+                    list.populiteCheckinTable(this, checkInData);
+                }, list.errorCB, function () {
+                    console.log("Database CheckInPersons populated ... executing query ...");
+                    db.close(list.closeCB, list.errorCB);
+                })
+        })
             .done();
+    }
+
+    populiteCheckinTable(tx, checkInData) {
+        console.log("Executing 签到表 DROP stmts");
+
+        tx.executeSql('DROP TABLE IF EXISTS ' + table_name);
+
+        console.log("Executing 签到表 CREATE stmts");
+
+        tx.executeSql('CREATE TABLE IF NOT EXISTS ' + table_name + '( '
+            + 'person_id VARCHAR(40) PRIMARY KEY NOT NULL, '
+            + 'name VARCHAR(20), '
+            + 'week VARCHAR(20), '
+            + 'time VARCHAR(20) ) ; ', [], this.successCB, this.errorCB);
+
+        console.log("Executing 签到表 INSERT stmts");
+        
+        //入库
+        checkInData.map((checkPerson) => {
+            var sql = 'INSERT INTO ' + table_name + ' (person_id, name, week, time) ' +
+                'VALUES ("' + checkPerson._PK_ +'", "' + checkPerson.USER_NAME + '", "' +
+                checkPerson.ATTENDANCE_WEEK + '", "' +  checkPerson.ONDUTY_TIME + '");';
+            //console.log(sql);
+            tx.executeSql(sql, []);
+        });
     }
 
     render(){
@@ -84,7 +144,7 @@ export default class CheckInList extends Component {
                     );
                 }
                 }
-                renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
+
             />
         </View>);
     }

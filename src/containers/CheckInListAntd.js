@@ -9,7 +9,7 @@ import {
     Text,
     StyleSheet
 }from 'react-native';
-import { default as config } from './config';
+import { default as config } from '../config';
 
 export default class CheckInListAntd extends Component{
     // 构造
