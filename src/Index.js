@@ -7,24 +7,58 @@ import {
     Navigator,
     StyleSheet,
 } from 'react-native';
-import CheckInList from './CheckInList';
-import CheckInListAntd from './CheckInListAntd';
-import SQLiteDemo2 from './SQLiteDemo2';
+import LoginDemo from './containers/LoginDemo';
+import  Login from './containers/Login';
+import Main from './containers/Main';
+import CheckInList from './containers/CheckInList';
+
+var _navigator;
 
 export default class Index extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <SQLiteDemo2/>
+    routeMapper(route, navigationOperations, onComponentRef) {
+        console.log("android");
+        _navigator = navigationOperations;
+        if (route.id === 'login') {
+            return (
+                <View style={styles.container}>
+                    <LoginDemo navigator={navigationOperations}/>
+                </View>
+            );
+        } else if (route.id === 'main') {
+            return (
+                <View style={styles.container}>
+                    <Main
+                        navigator={navigationOperations} />
+                </View>
+            );
+        } else if (route.id === 'checkList') {
+            return (
+                <View style={styles.container}>
+                    <CheckInList
+                        navigator={navigationOperations}
+                    />
+                </View>
+            );
+        }
+    }
 
-            </View>
+    render() {
+        var initialRoute = {id: 'login'};
+        var index = this;
+        return (
+            <Navigator
+                style={styles.container}
+                initialRoute={initialRoute}
+                renderScene={index.routeMapper}
+            />
+
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 2,
         flexDirection: 'column',
         backgroundColor: '#F5FCFF',
     },
