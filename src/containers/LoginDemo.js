@@ -8,41 +8,53 @@ import {
     Text,
     Image,
     View,
-    TextInput
+    TextInput,
+    Dimensions,
+    TouchableHighlight,
 } from 'react-native';
 
+var screenWidth = Dimensions.get('window').width;
+var screenHight = Dimensions.get('window').height;
+
 export default class LoginDemo extends Component {
+    onCheck(){
+        this.props.navigator.push(
+            {
+                id: "main"
+            });
+    }
+
     render() {
         return (
-            <View style={styles.container}>
+            <Image source={require('../resources/login_bg.png')} style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headtitle}>添加账号</Text>
+
                 </View>
                 <View style={styles.avatarview}>
-                    <Image source={require('../resources/ic_businfo_query.png')} style={styles.avatarimage}/>
+                    <Image source={require('../resources/app_name.png')} style={styles.avatarimage}/>
                 </View>
                 <View style={styles.inputview}>
-                    <TextInput underlineColorAndroid='transparent' style={styles.textinput} placeholder='QQ号/手机号/邮箱'/>
-                    <View style={styles.dividerview}>
-                        <Text style={styles.divider}></Text>
-                    </View>
-                    <TextInput underlineColorAndroid='transparent' style={styles.textinput} placeholder='密码' secureTextEntry={true}/>
+                    <TextInput underlineColorAndroid='transparent' style={styles.textinput} placeholder='请输入帐号'/>
+                    <TextInput underlineColorAndroid='transparent' style={styles.textinput} placeholder='请输入密码' secureTextEntry={true}/>
                 </View>
                 <View style={styles.bottomview}>
-                    <View style={styles.buttonview}>
-                        <Text style={styles.logintext}>登 录</Text>
-                    </View>
+                    <TouchableHighlight style={styles.buttonview}
+                                        activeOpacity={0.5}
+                                        onPress={this.onCheck.bind(this)}
+                    >
+                        <Text style={styles.logintext}>登 录 | login</Text>
+                    </TouchableHighlight>
                     <View style={styles.emptyview}></View>
-                    <View style={styles.bottombtnsview}>
+                    {/*<View style={styles.bottombtnsview}>
                         <View style={styles.bottomleftbtnview}>
                             <Text style={styles.bottombtn}>无法登录？</Text>
                         </View>
                         <View style={styles.bottomrightbtnview}>
                             <Text style={styles.bottombtn}>新用户</Text>
                         </View>
-                    </View>
+                    </View>*/}
                 </View>
-            </View>
+            </Image>
         );
     }
 }
@@ -50,33 +62,29 @@ export default class LoginDemo extends Component {
 const styles = {
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF'
+        width:screenWidth,
+        height:screenHight,
     },
     header: {
-        height: 50,
+        height: 20,
         justifyContent: 'center',
-    },
-    headtitle: {
-        alignSelf: 'center',
-        fontSize: 18,
-        color: '#000000',
     },
     avatarview: {
         height: 150,
-        backgroundColor: '#ECEDF1',
         justifyContent: 'center',
     },
     avatarimage: {
-        width: 100,
-        height: 100,
         alignSelf: 'center'
     },
     inputview: {
-        height: 100,
+        height: 150,
+        justifyContent: 'center',
     },
     textinput: {
         flex: 1,
+        marginLeft:150,
         fontSize: 16,
+
     },
     dividerview: {
         flexDirection: 'row',
@@ -84,15 +92,14 @@ const styles = {
     divider: {
         flex: 1,
         height: 1,
-        backgroundColor: '#ECEDF1'
+
     },
     bottomview: {
-        backgroundColor: '#ECEDF1',
         flex: 1,
     },
     buttonview: {
-        backgroundColor: '#1DBAF1',
-        margin: 10,
+        backgroundColor: '#F4B72E',
+        margin: 20,
         borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
@@ -100,6 +107,7 @@ const styles = {
     logintext: {
         fontSize: 17,
         color: '#FFFFFF',
+        fontWeight: 'bold',
         marginTop: 10,
         marginBottom: 10,
     },
