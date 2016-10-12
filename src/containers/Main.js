@@ -9,7 +9,12 @@ import {
     ListView,
     StyleSheet,
     RecyclerViewBackedScrollView,
+    Image,
+    Dimensions,
 } from 'react-native';
+
+var screenWidth = Dimensions.get('window').width;
+var screenHight = Dimensions.get('window').height;
 
 export default class Main extends Component {
     // 构造
@@ -27,29 +32,81 @@ export default class Main extends Component {
       }
 
     render(){
+        var main = this;
         return (
-            <View>
-                <Text style={styles.baseText}>
-                    主页
-                </Text>
-                <TouchableHighlight
-                    underlayColor='#4169e1'
-                    activeOpacity={0.5}
-                    style={styles.style_view_button}
-                    onPress={this.onCheck.bind(this)}
-                >
-                    <Text style={{fontSize:16,color:'#fff'}}>检查管理</Text>
-                </TouchableHighlight>
-            </View>
+            <Image style={styles.container} source={require('../resources/menu_bg.png')}>
+                <Image source={require('../resources/toolbar_bg.png')}/>
+                <View style={styles.tableContainer}>
+                    <View style={[styles.container,styles.row]}>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_jcgl.png')}/>
+                        </View>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_dzxc.png')}/>
+                        </View>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_clgl.png')}/>
+                        </View>
+                    </View>
+                    <View style={[styles.container,styles.row]}>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_jcgl.png')}/>
+                            <Text style={styles.lableText}>检查管理</Text>
+                        </View>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_dzxc.png')}/>
+                            <Text style={styles.lableText}>电子巡查</Text>
+                        </View>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_clgl.png')}/>
+                            <Text style={styles.lableText}>车辆管理</Text>
+                        </View>
+                    </View>
+                    <View style={[styles.container,styles.row]}>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_ryaf.png')}/>
+                            <Text style={styles.lableText}>人员安防</Text>
+                        </View>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_zdgl.png')}/>
+                            <Text style={styles.lableText}>制度管理</Text>
+                        </View>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_bbxt.png')}/>
+                            <Text style={styles.lableText}>报表系统</Text>
+                        </View>
+                    </View>
+                </View>
+            </Image>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    baseText: {
-        fontFamily: 'Cochin',
-        margin: 20,
-        textAlign: 'left'
+    container: {
+        flex: 1,
+        width:screenWidth,
+        height:screenHight,
+
+    },
+    tableContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    itemview:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height:210,
+    },
+    row:{
+        flexDirection: 'row',
+    },
+    toolbar: {
+        width:screenWidth,
+        alignSelf:'flex-start',
+        justifyContent:'center',
     },
     style_view_button:{
         marginTop:15,
@@ -76,8 +133,7 @@ const styles = StyleSheet.create({
     lableText: {
         flex:1,
         fontFamily:'Cochin',
-        color:'#FFFFFF',
-        backgroundColor:'red',
+        color:'#000000',
         padding:5,
     },
     separator: {
