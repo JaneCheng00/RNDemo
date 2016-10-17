@@ -13,6 +13,7 @@ import {
     Navigator
 } from 'react-native';
 import  Login from './src/containers/Login';
+import LoginDemo from './src/containers/LoginDemo';
 import Main from './src/containers/Main';
 import CheckInList from './src/containers/CheckInList';
 
@@ -22,7 +23,7 @@ class RNDemo extends Component {
         console.log(route.id);
         switch (route.id) {
             case 'login':
-                return (<Login navigator={navigator}
+                return (<LoginDemo navigator={navigator}
                                onBack={() => {
                                    if (route.index > 0) {
                                        navigator.pop();

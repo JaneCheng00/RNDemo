@@ -35,8 +35,14 @@ export default class Login extends Component {
 
           return (
               <Image style={styles.loginContainer} source={require('../resources/login_bg.png')}>
-                    <Text style={styles.baseText}>公交安保电子信息巡查</Text>
-
+                  <Image style={styles.logoView} source={require('../resources/app_name.png')}/>
+                  <TouchableHighlight
+                      underlayColor='#4169e1'
+                      activeOpacity={0.5}
+                      style={styles.style_view_button}
+                  >
+                      <Text style={{fontSize:16,color:'#fff'}}>登录 | login</Text>
+                  </TouchableHighlight>
 
               </Image>
           );
@@ -45,15 +51,15 @@ export default class Login extends Component {
 
 const styles = StyleSheet.create({
     loginContainer: {
-        alignItems: 'center',
+        flexDirection:'column',
         width:screenWidth,
         height:screenHight,
     },
 
     logoView: {
-        flexDirection:'row',
-        marginTop:20,
-        alignItems:'flex-start',
+        marginTop:35,
+        alignSelf:'flex-start',
+        justifyContent:'center',
     },
 
     baseText: {
@@ -65,15 +71,16 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     style_view_button:{
-        marginTop:15,
         marginLeft:10,
         marginRight:10,
         backgroundColor:'#63B8FF',
         borderColor:'#5bc0de',
         height:45,
+        width:screenWidth - 10,
         borderRadius:5,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems:'center',
+        alignSelf:'center',
     },
     titleText: {
         fontSize: 20,

@@ -25,6 +25,7 @@ export default class Main extends Component {
       }
 
       onCheck(){
+            console.log('点击检查管理');
           this.props.navigator.push(
               {
                   id: "checkList"
@@ -37,20 +38,16 @@ export default class Main extends Component {
             <Image style={styles.container} source={require('../resources/menu_bg.png')}>
                 <Image source={require('../resources/toolbar_bg.png')}/>
                 <View style={styles.tableContainer}>
-                    <View style={[styles.container,styles.row]}>
+                    <View style={[styles.tableContainer,styles.row]}>
                         <View style={styles.itemview}>
-                            <Image source={require('../resources/ic_menu_jcgl.png')}/>
-                        </View>
-                        <View style={styles.itemview}>
-                            <Image source={require('../resources/ic_menu_dzxc.png')}/>
-                        </View>
-                        <View style={styles.itemview}>
-                            <Image source={require('../resources/ic_menu_clgl.png')}/>
-                        </View>
-                    </View>
-                    <View style={[styles.container,styles.row]}>
-                        <View style={styles.itemview}>
-                            <Image source={require('../resources/ic_menu_jcgl.png')}/>
+                            <Image source={require('../resources/ic_menu_jcgl.png')}>
+
+                                <TouchableHighlight activeOpacity={0.5}
+                                                    onPress={this.onCheck.bind(this)}
+                                >
+                                    <Text style={styles.menuText} ></Text>
+                                </TouchableHighlight>
+                            </Image>
                             <Text style={styles.lableText}>检查管理</Text>
                         </View>
                         <View style={styles.itemview}>
@@ -62,7 +59,7 @@ export default class Main extends Component {
                             <Text style={styles.lableText}>车辆管理</Text>
                         </View>
                     </View>
-                    <View style={[styles.container,styles.row]}>
+                    <View style={[styles.tableContainer,styles.row]}>
                         <View style={styles.itemview}>
                             <Image source={require('../resources/ic_menu_ryaf.png')}/>
                             <Text style={styles.lableText}>人员安防</Text>
@@ -74,6 +71,18 @@ export default class Main extends Component {
                         <View style={styles.itemview}>
                             <Image source={require('../resources/ic_menu_bbxt.png')}/>
                             <Text style={styles.lableText}>报表系统</Text>
+                        </View>
+                    </View>
+                    <View style={[styles.tableContainer,styles.row]}>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_yxdx.png')}/>
+                            <Text style={styles.lableText}>语音短信</Text>
+                        </View>
+                        <View style={styles.itemview}>
+                            <Image source={require('../resources/ic_menu_dbsj.png')}/>
+                            <Text style={styles.lableText}>待办事项</Text>
+                        </View>
+                        <View style={styles.itemview}>
                         </View>
                     </View>
                 </View>
@@ -98,7 +107,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        height:210,
+        height:150,
     },
     row:{
         flexDirection: 'row',
@@ -135,6 +144,15 @@ const styles = StyleSheet.create({
         fontFamily:'Cochin',
         color:'#000000',
         padding:5,
+    },
+    menuText: {
+        flex:1,
+        fontFamily:'Cochin',
+        padding:5,
+        width:40,
+        height:70,
+        alignSelf:'center',
+        justifyContent: 'center',
     },
     separator: {
         height: 1,

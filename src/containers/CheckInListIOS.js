@@ -18,6 +18,8 @@ import {
 const displayName = '公交安保电子信息巡查';
 const title = '<TabBarIOS>';
 const description = 'Tab-based navigation.';
+const HAS_MODEL = 0;
+const TEMP_PLAN = 1;
 var screenWidth = Dimensions.get('window').width;
 var screenHight = Dimensions.get('window').height;
 
@@ -31,8 +33,60 @@ export default class CheckInList extends Component {
               selectedTab: 'task',
               notifCount: 0,
               presses: 0,
+              ds:ds.cloneWithRows([
+                  {_PK_: "0", TASK_NAME:'2016060801', COMPANY_NAME:'第一分公司', TIME:'2016-06-08 00:00:00', HAS_MODEL:0},
+                  {_PK_: "1", TASK_NAME:'20160615检查计划', COMPANY_NAME:'第一车队', TIME:'2016-06-015 00:00:00', HAS_MODEL:1},
+              ]),
           };
+      }
 
+      renderPlanItem(plan) {
+          let planImage = require('../resources/plan_task.png');
+          let modeImage = require('../resources/change_task.png');
+          let modelText = "有模板";
+          if(plan.HAS_MODEL === HAS_MODEL) {
+            planImage = require('../resources/plan_task.png');
+            modeImage = require('../resources/change_task.png');
+              modelText = "有模板";
+          }
+          if(plan.HAS_MODEL === TEMP_PLAN) {
+                planImage = require('../resources/off_plan.png');
+                modeImage = require('../resources/mar_task.png');
+              modelText = "无模板";
+          }
+          return (
+              <View style={styles.itemBottom}>
+                  <View style={styles.itemLeft}>
+                      <Image style={styles.itemModel} source={modeImage}/>
+                      <Image style={styles.itemPlan} source={planImage}/>
+                  </View>
+                  <View style={styles.itemRight}>
+                      <Text>
+                          <Text style={styles.lableText}>任务名称: </Text>
+                          <Text style={styles.baseText}>{plan.TASK_NAME + '\n'}</Text>
+                      </Text>
+                      <Text>
+                          <Text style={styles.lableText}>稽查公司: </Text>
+                          <Text style={styles.baseText}>{plan.COMPANY_NAME + '\n'}</Text>
+                      </Text>
+                      <Text>
+                          <Text style={styles.lableText}>{plan.TIME + '-' + '\n'}</Text>
+                          <Text style={styles.baseText}>{plan.TIME + '\n'}</Text>
+                      </Text>
+                  </View>
+            </View>
+          );
+      }
+
+      renderPlanList() {
+          let that = this;
+          return <ListView
+              dataSource={that.state.ds}
+              renderRow={(rowData) => {
+                  return that.renderPlanItem(rowData);
+              }
+              }
+          />
       }
 
     _renderContent(color, pageText, num) {
@@ -64,7 +118,7 @@ export default class CheckInList extends Component {
                                 notifCount: this.state.notifCount + 1,
                             });
                         }}>
-                        {this._renderContent('#EAEDF0', '检查计划任务页面', this.state.notifCount)}
+                        {this.renderPlanList()}
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
                         icon={require('../resources/record.png')}
@@ -91,7 +145,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width:screenWidth,
         height:screenHight,
-
     },
     contentContainer: {
         flex: 1,
@@ -102,7 +155,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
-
     tabText: {
         color: '#A4A4A4',
         margin: 50,
@@ -110,39 +162,53 @@ const styles = StyleSheet.create({
     baseText: {
         fontFamily: 'Cochin',
         margin: 20,
-        textAlign: 'left'
+        textAlign: 'left',
+        color:'#A6A6A6',
     },
-    style_view_button:{
-        marginTop:15,
-        marginLeft:10,
-        marginRight:10,
-        backgroundColor:'#63B8FF',
-        borderColor:'#5bc0de',
-        height:45,
-        borderRadius:5,
-        justifyContent: 'center',
-        alignItems: 'center',
+    itemBottom: {
+        flexDirection:'row',
+        flex: 1,
+        backgroundColor: 'white',
+        borderRightWidth:0.5,
+        borderLeftWidth:0.5,
+        borderTopWidth:0.5,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: '#DCE0E2',
+        borderRadius:0.5,
+        marginLeft:8,
+        marginRight:8,
+        marginTop:12,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    itemLeft: {
+        flex:1,
+        flexDirection:'column',
+        alignSelf:'center',
+        justifyContent:'center',
+    },
+    itemRight: {
+        flex:2,
+        alignSelf:'center',
+    },
+    itemModel: {
+        alignSelf:'flex-start',
+        width:30,
+        height:15,
+    },
+    itemPlan: {
+        alignSelf:'center',
+        width:60,
+        height:60,
     },
     titleText: {
         fontSize: 20,
         color:'#FF4040',
         fontWeight: 'bold',
     },
-    listItem: {
-        marginLeft: 10,
-        marginTop: 15,
-        marginBottom: 15,
-        flex:1,
-    },
     lableText: {
-        flex:1,
         fontFamily:'Cochin',
-        color:'#FFFFFF',
-        backgroundColor:'red',
+        color:'#A6A6A6',
         padding:5,
-    },
-    separator: {
-        height: 1,
-        backgroundColor: '#CCCCCC',
     },
 });
