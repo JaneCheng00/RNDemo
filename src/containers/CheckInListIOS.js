@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import TempForm from './TempForm';
 import JcbForm from './JcbForm';
-import CheckInListAntd from './CheckInListAntd';
 import Main from './Main';
 
 const displayName = '公交安保电子信息巡查';

@@ -19,12 +19,14 @@ var screenWidth = Dimensions.get('window').width;
 var screenHight = Dimensions.get('window').height;
 
 var _navigator;
+var _user;
 export default class Main extends Component {
     // 构造
       constructor(props) {
         super(props);
         // 初始状态
         this.state = {};
+        _user = this.props.user;
       }
 
       onAdd() {

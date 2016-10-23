@@ -13,11 +13,30 @@ import {
     TouchableHighlight,
 } from 'react-native';
 import Main from './Main';
+import {connect} from 'react-redux';
+import {doLogin} from '../actions/Login'
 
 var screenWidth = Dimensions.get('window').width;
 var screenHight = Dimensions.get('window').height;
 
-export default class Login extends Component {
+class Login extends Component {
+    shouldComponentUpdate(nextProps, nextState) {
+        // 登录完成，且成功登录
+        if (nextProps.status === 'done' && nextProps.isSuccess) {
+            this.props.navigator.push(
+                {
+                    id:'main',
+                    name:"主页",
+                    component: Main,
+                    passProps: {
+                        user: nextProps.user
+                    },
+                });
+            return false;
+        }
+        return true;
+    }
+
     onCheck(){
         this.props.navigator.push(
             {
@@ -27,7 +46,27 @@ export default class Login extends Component {
             });
     }
 
+    // 执行登录
+    handleLogin()
+    {
+        this.props.dispatch(doLogin());
+    }
+
     render() {
+        let tips;
+        if (this.props.status === 'init')
+        {
+            tips = '请点击登录';
+        }
+        else if (this.props.status === 'doing')
+        {
+            tips = '正在登录...';
+        }
+        else if (this.props.status === 'done' && !this.props.isSuccess)
+        {
+            tips = '登录失败, 请重新登录';
+        }
+
         return (
             <Image source={require('../resources/login_bg.png')} style={styles.container}>
                 <View style={styles.header}>
@@ -43,22 +82,23 @@ export default class Login extends Component {
                 <View style={styles.bottomview}>
                     <TouchableHighlight style={styles.buttonview}
                                         activeOpacity={0.5}
-                                        onPress={this.onCheck.bind(this)}
+                                        onPress={this.handleLogin.bind(this)}
                     >
                         <Text style={styles.logintext}>登 录 | login</Text>
                     </TouchableHighlight>
                     <View style={styles.emptyview}></View>
-                    {/*<View style={styles.bottombtnsview}>
-                        <View style={styles.bottomleftbtnview}>
-                            <Text style={styles.bottombtn}>无法登录？</Text>
-                        </View>
-                        <View style={styles.bottomrightbtnview}>
-                            <Text style={styles.bottombtn}>新用户</Text>
-                        </View>
-                    </View>*/}
                 </View>
             </Image>
         );
+    }
+}
+
+function select(store)
+{
+    return {
+        status: store.loginIn.status,
+        isSuccess: store.loginIn.isSuccess,
+        user: store.loginIn.user
     }
 }
 
@@ -139,3 +179,5 @@ const styles = {
         color: '#1DBAF1',
     }
 };
+
+export default connect(select)(Login);
