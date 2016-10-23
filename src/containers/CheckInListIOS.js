@@ -13,7 +13,10 @@ import {
     Image,
     Dimensions,
 } from 'react-native';
-
+import TempForm from './TempForm';
+import JcbForm from './JcbForm';
+import CheckInListAntd from './CheckInListAntd';
+import Main from './Main';
 
 const displayName = '公交安保电子信息巡查';
 const title = '<TabBarIOS>';
@@ -22,11 +25,12 @@ const HAS_MODEL = 0;
 const TEMP_PLAN = 1;
 var screenWidth = Dimensions.get('window').width;
 var screenHight = Dimensions.get('window').height;
-
+var _navigator;
 export default class CheckInList extends Component {
     // 构造
       constructor(props) {
         super(props);
+          _navigator = this.props.navigator;
         // 初始状态
           var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           this.state = {
@@ -38,6 +42,26 @@ export default class CheckInList extends Component {
                   {_PK_: "1", TASK_NAME:'20160615检查计划', COMPANY_NAME:'第一车队', TIME:'2016-06-015 00:00:00', HAS_MODEL:1},
               ]),
           };
+      }
+
+      pressRow(plan) {
+          let id = 'tempTask';
+          let name = '临时任务';
+          let component = TempForm;
+          let title = '临时任务';
+          if(plan.HAS_MODEL === HAS_MODEL) {
+              id = 'jcbTask';
+              name = '场站检查';
+              component = JcbForm;
+              title = '场站检查';
+          }
+          _navigator.push(
+              {
+                  id: id,
+                  name: name,
+                  component: component,
+                  title: title,
+              });
       }
 
       renderPlanItem(plan) {
@@ -55,38 +79,43 @@ export default class CheckInList extends Component {
               modelText = "无模板";
           }
           return (
-              <View style={styles.itemBottom}>
-                  <View style={styles.itemLeft}>
-                      <Image style={styles.itemModel} source={modeImage}/>
-                      <Image style={styles.itemPlan} source={planImage}/>
-                  </View>
-                  <View style={styles.itemRight}>
-                      <Text>
-                          <Text style={styles.lableText}>任务名称: </Text>
-                          <Text style={styles.baseText}>{plan.TASK_NAME + '\n'}</Text>
-                      </Text>
-                      <Text>
-                          <Text style={styles.lableText}>稽查公司: </Text>
-                          <Text style={styles.baseText}>{plan.COMPANY_NAME + '\n'}</Text>
-                      </Text>
-                      <Text>
-                          <Text style={styles.lableText}>{plan.TIME + '-' + '\n'}</Text>
-                          <Text style={styles.baseText}>{plan.TIME + '\n'}</Text>
-                      </Text>
-                  </View>
-            </View>
+              <TouchableHighlight onPress={() => {
+                  this.pressRow(plan);
+              }}>
+                 <View style={styles.itemBottom}>
+
+                      <View style={styles.itemLeft}>
+                          <Image style={styles.itemModel} source={modeImage}/>
+                          <Image style={styles.itemPlan} source={planImage}/>
+                      </View>
+                      <View style={styles.itemRight}>
+                          <Text>
+                              <Text style={styles.lableText}>任务名称: </Text>
+                              <Text style={styles.baseText}>{plan.TASK_NAME + '\n'}</Text>
+                          </Text>
+                          <Text>
+                              <Text style={styles.lableText}>稽查公司: </Text>
+                              <Text style={styles.baseText}>{plan.COMPANY_NAME + '\n'}</Text>
+                          </Text>
+                          <Text>
+                              <Text style={styles.lableText}>{plan.TIME + '-' + '\n'}</Text>
+                              <Text style={styles.baseText}>{plan.TIME + '\n'}</Text>
+                          </Text>
+                      </View>
+                </View>
+              </TouchableHighlight>
           );
       }
 
       renderPlanList() {
           let that = this;
-          return <ListView
+          return (<ListView
               dataSource={that.state.ds}
               renderRow={(rowData) => {
                   return that.renderPlanItem(rowData);
               }
               }
-          />
+          />);
       }
 
     _renderContent(color, pageText, num) {

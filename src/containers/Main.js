@@ -12,10 +12,13 @@ import {
     Image,
     Dimensions,
 } from 'react-native';
+import CheckInList from './CheckInListIOS';
+import TempForm from './TempForm';
 
 var screenWidth = Dimensions.get('window').width;
 var screenHight = Dimensions.get('window').height;
 
+var _navigator;
 export default class Main extends Component {
     // 构造
       constructor(props) {
@@ -24,11 +27,26 @@ export default class Main extends Component {
         this.state = {};
       }
 
-      onCheck(){
-            console.log('点击检查管理');
-          this.props.navigator.push(
+      onAdd() {
+          _navigator.push(
               {
-                  id: "checkList"
+                  id:'tempTask',
+                  name:'临时任务',
+                  component: TempForm,
+                  title:'临时任务',
+              });
+      }
+
+      onCheck(){
+          _navigator = this.props.navigator;
+          _navigator.push(
+              {
+                  id:'checkList',
+                  name:'检查管理',
+                  component: CheckInList,
+                  title:'检查管理',
+                  rightText: '新增',
+                  onPress: this.onAdd,
               });
       }
 
